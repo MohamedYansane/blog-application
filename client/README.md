@@ -1,5 +1,5 @@
 # FRONT-END-BLOG
-my front-end branch folder client 
+my front-end branch folder client side
 
 # Getting Started with Create React App
 
