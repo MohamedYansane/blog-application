@@ -1,0 +1,6 @@
+# to ignore all files in the upload directory
+*
+!.gitignore
+#it's not logic to push all the pictures into git
+#the exclamation marks mean we must ignore all files
+#in the upload directory except gitignore file
