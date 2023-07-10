@@ -1,15 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-const countInitialState = { number: 0 };
+// creation du slice
+const cptState = { number: 0 };
 const countSlice = createSlice({
   name: "compteur",
-  initialState: countInitialState,
+  initialState: cptState,
   reducers: {
-    countChange: (state, action) => {
+    countChange(state, action) {
       state.number = action.payload;
     },
   },
 });
 
-const countActions = countSlice.actions;
-const countReducer = countSlice.reducer;
-export { countActions, countReducer };
+const cptReducer = countSlice.reducer;
+const cptActions = countSlice.actions;
+export { cptReducer, cptActions };
