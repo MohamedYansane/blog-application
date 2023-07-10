@@ -1,5 +1,5 @@
 import React from "react";
-import images from "./../../assets/images/Images";
+import images from "../../assets/images/Images";
 import {
   AiFillTwitterSquare,
   AiFillYoutube,

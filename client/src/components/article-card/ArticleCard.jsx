@@ -1,11 +1,11 @@
 import React from "react";
-import { Articles } from "../../pages/container/Articles";
-import images from "./../../assets/images/Images";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
+import images from "../../assets/images/Images";
 export const ArticleCard = ({ className }) => {
   return (
     <div
-      className={`rounded-xl overflow-hidden shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px] ${className}`}>
+      className={`rounded-xl overflow-hidden shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px] ${className}`}
+    >
       <img
         src={images.computer}
         alt="title"
