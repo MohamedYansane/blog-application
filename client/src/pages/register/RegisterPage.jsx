@@ -172,9 +172,13 @@ export const RegisterPage = () => {
                   >
                     Forgot Password?
                   </Link>
+                  {/**inside the register btn className i said if the
+                   * button is disabled the opacity must be 0.7 and cursor not allowed
+                   */}
                   <button
                     type="submit"
-                    className="btn-save px-4 text-white py-2 rounded-md shadow-md"
+                    className="disabled:opacity-70 disabled:cursor-not-allowed btn-save px-4 text-white py-2 rounded-md shadow-md"
+                    disabled={!isValid}
                   >
                     Register
                   </button>
