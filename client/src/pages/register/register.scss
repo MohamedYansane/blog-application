@@ -1,7 +1,6 @@
-.container {
+.container-register {
   display: flex;
   flex-direction: column;
-  width: 598px;
 
   .title {
     position: relative;
@@ -21,7 +20,7 @@
     }
   }
   .input-box {
-    width: calc(100% / 2 - 20px);
+    width: calc(100%);
     margin: 5px 0 5px 0;
     align-items: start;
     .input-title {
@@ -33,13 +32,16 @@
       width: 100%;
       outline: none;
       border-radius: 5px;
-      border: 1px solid #ccc;
+
       padding-left: 10px;
       border-bottom-width: 2px;
       transition: all 0.3s ease;
       &:focus {
         border-color: #5073fb;
       }
+    }
+    .select-box {
+      border: 1px solid #ccc;
     }
     .select-box select {
       height: 100%;
