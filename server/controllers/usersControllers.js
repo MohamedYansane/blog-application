@@ -16,10 +16,19 @@ export const getUsers = asyncHandler(async (req, res) => {
 });
 export const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
+  // i cmment this for my error to be shown exactly where it from from the app
   if (!name || !email || !password) {
     res.status(400);
     throw new Error("Fields are required");
   }
+  //the best way
+  /* const fields = [name, email, password];
+  const emptyFields = fields.filter((field) => !req.body[field]);
+  if (emptyFields.length > 0) {
+    res.status(400);
+    throw new Error(`Fields are required: ${emptyFields.join(", ")}`);
+  }*/
+
   // check if the user already exists
   const findUser = await User.findOne({ email: email });
   if (findUser) {
