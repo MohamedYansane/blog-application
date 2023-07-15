@@ -1,12 +1,56 @@
-import React from "react";
+import { React, useEffect } from "react";
 import "./register.scss";
 import { MainLayout } from "../../components/mainlayout/MainLayout";
 import images from "../../assets/images/Images";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 /* for form validation we've to install "npm install react-hook-form" */
 import { useForm } from "react-hook-form";
-
+import { useMutation } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+// we 've to import toaster also in the app.js file
+import { signup } from "../../services/index/users";
+//redux component
+import { useDispatch, useSelector } from "react-redux";
+import { userAction } from "../../store/reducers/userReducers";
 export const RegisterPage = () => {
+  //creating an instance of my useNavigate
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  //with our userState wwe wanna return a piece àf state
+  const userState = useSelector((state) => state.user);
+  const { mutate, isLoading } = useMutation({
+    //mutationFn return a promise
+    mutationFn: ({ name, email, password }) => {
+      return signup({ name, email, password });
+    },
+    //After getting the data from the backend
+    //the Onsuccess run automatically it has a callback we r passing the data
+    onSuccess: (data) => {
+      // console.log(data);
+      dispatch(userAction.setUserInfo(data));
+      toast.success("User created successfully");
+      //notice when we refresh our page our data in the
+      //store will disappear and we dont want that so we gonna
+      //store our data in localStorage
+      localStorage.setItem("account", JSON.stringify(data));
+      // i've to pull out then my data in my localstorage and store it to my redux store
+    },
+    onError: (error) => {
+      toast.error(error.message);
+      console.log(error);
+      //to test it insinde our async function signup
+      //we tried to remove one required field and then try to register from the navigator
+    },
+  });
+  // i wanna redirect a user if he's logged in
+  useEffect(() => {
+    if (userState.userInfo) {
+      //i wanna redirect him to the login page
+      //to redirect we gonna use useNavigator from react router dom
+      navigate("/");
+    }
+  }, [navigate, userState.userInfo]);
+
   //inside the const we get the register and the handleSubmit
   // we've to pull out the errors and isValid properties from the useForm
 
@@ -32,7 +76,9 @@ export const RegisterPage = () => {
   //correct it will call the submitHandler other it wont work
   //important: now we gonna get data
   const submitHandler = (data) => {
-    console.log(data);
+    //console.log(data);
+    const { name, email, password } = data;
+    mutate({ name, email, password });
   };
   return (
     <>
@@ -178,7 +224,7 @@ export const RegisterPage = () => {
                   <button
                     type="submit"
                     className="disabled:opacity-70 disabled:cursor-not-allowed btn-save px-4 text-white py-2 rounded-md shadow-md"
-                    disabled={!isValid}
+                    disabled={!isValid || isLoading}
                   >
                     Register
                   </button>

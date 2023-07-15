@@ -4,6 +4,7 @@ import { ArticleDetail } from "./pages/articleDetail/ArticleDetail";
 import { HomePage } from "./pages/home/HomePage";
 import { Routes, Route } from "react-router-dom";
 import { RegisterPage } from "./pages/register/RegisterPage";
+import { Toaster } from "react-hot-toast";
 const App = () => {
   return (
     <div className="App font-jetbrain">
@@ -12,6 +13,7 @@ const App = () => {
         <Route path="blog/:id" element={<ArticleDetail />} />
         <Route index path="/register" element={<RegisterPage />} />{" "}
       </Routes>
+      <Toaster />
     </div>
   );
 };
