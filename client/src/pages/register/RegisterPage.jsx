@@ -212,12 +212,6 @@ export const RegisterPage = () => {
                   )}
                 </div>
                 <div className="flex justify-between w-full mt-4">
-                  <Link
-                    to="/forget-password"
-                    className="forget-password text-primary text-sm"
-                  >
-                    Forgot Password?
-                  </Link>
                   {/**inside the register btn className i said if the
                    * button is disabled the opacity must be 0.7 and cursor not allowed
                    */}
