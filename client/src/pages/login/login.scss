@@ -1,0 +1,151 @@
+.container-login {
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      height: 4px;
+      width: 98px;
+      background: linear-gradient(
+        90deg,
+        rgba(16, 36, 62, 1) 0%,
+        rgba(80, 115, 251, 1) 35%,
+        rgba(0, 212, 255, 1) 100%
+      );
+      left: 0;
+      bottom: -4px;
+    }
+  }
+  .input-box {
+    width: calc(100%);
+    margin: 5px 0 5px 0;
+    align-items: start;
+    .input-title {
+      text-align: left;
+    }
+    input,
+    .select-box {
+      height: 40px;
+      width: 100%;
+      outline: none;
+      border-radius: 5px;
+
+      padding-left: 10px;
+      border-bottom-width: 2px;
+      transition: all 0.3s ease;
+      &:focus {
+        border-color: #5073fb;
+      }
+    }
+    .select-box {
+      border: 1px solid #ccc;
+    }
+    .select-box select {
+      height: 100%;
+      width: 100%;
+      border: none;
+      outline: none;
+      color: #707070;
+    }
+  }
+  .btn-save {
+    outline: none;
+    border: none;
+    width: 48%;
+    background: linear-gradient(
+      90deg,
+      rgba(16, 36, 62, 1) 0%,
+      rgba(80, 115, 251, 1) 35%,
+      rgba(0, 212, 255, 1) 100%
+    );
+    &:hover {
+      background: linear-gradient(
+        -90deg,
+        rgba(16, 36, 62, 1) 0%,
+        rgba(80, 115, 251, 1) 35%,
+        rgba(0, 212, 255, 1) 100%
+      );
+    }
+  }
+  .btn-cancel:hover {
+    color: #fff;
+    background: linear-gradient(
+      -90deg,
+      rgba(16, 36, 62, 1) 0%,
+      rgba(80, 115, 251, 1) 35%,
+      rgba(0, 212, 255, 1) 100%
+    );
+  }
+
+  @keyframes rotate-hue {
+    to {
+      filter: hue-rotate(1turn);
+    }
+  }
+
+  .btn-cancel,
+  .btn-cancel::after {
+    box-sizing: border-box;
+  }
+
+  .btn-cancel:active {
+    --border-width: 4px;
+  }
+  .gender-details {
+    .mat-mdc-radio-button.mat-accent {
+      --mdc-radio-selected-focus-icon-color: #5073fb !important;
+      --mdc-radio-selected-hover-icon-color: #5073fb !important;
+      --mdc-radio-selected-icon-color: #5073fb !important;
+      --mdc-radio-selected-pressed-icon-color: #5073fb !important;
+
+      --mat-radio-checked-ripple-color: #5073fb !important;
+    }
+    .category {
+      display: flex;
+      justify-content: space-between;
+      width: 50%;
+      margin: 10px 0;
+      label {
+        display: flex;
+        align-items: center;
+        .dot {
+          height: 16px;
+          width: 16px;
+          background-color: #d9d9d9;
+          border-radius: 50%;
+          margin-right: 10px;
+          border: 5px solid transparent;
+          cursor: pointer;
+          transition: all 0.3 ease;
+        }
+      }
+    }
+    #dot-1:checked {
+      ~ .category {
+        label {
+          .one {
+            border: 5px solid #5073fb;
+          }
+        }
+      }
+    }
+    #dot-2:checked {
+      ~ .category {
+        label {
+          .two {
+            border: 5px solid #5073fb;
+          }
+        }
+      }
+    }
+    input[type="radio"] {
+      display: block;
+    }
+  }
+  .false {
+    display: none;
+  }
+}

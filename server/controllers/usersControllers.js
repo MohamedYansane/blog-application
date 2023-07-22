@@ -75,6 +75,7 @@ export const loginUser = asyncHandler(async (req, res) => {
     throw new Error("All field are required");
   }
   const _user = await User.findOne({ email });
+  if (!_user) throw new Error("Email not found");
   if (_user && (await bcrypt.compare(password, _user.password))) {
     const acessToken = jwt.sign(
       {
@@ -108,7 +109,9 @@ export const loginUser = asyncHandler(async (req, res) => {
 // @router GET /api/users/profile
 // @access private
 export const userProfile = asyncHandler(async (req, res) => {
-  let _user = await User.findById(req.user._id).select("-password");
+  // it wont select the password of the user in case it exists
+  // let _user = await User.findById(req.user._id).select("-password");
+  let _user = await User.findById(req.user._id);
   if (_user) {
     res.status(201).json(_user);
   } else {

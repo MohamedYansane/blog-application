@@ -4,7 +4,8 @@ import "./header.scss";
 import { Menu, Close, KeyboardArrowDownOutlined } from "@mui/icons-material";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../store/actions/user";
-import images from "../../assets/images/Images";
+import { useNavigate } from "react-router-dom";
+
 const navInfo = [
   { name: "Home", type: "link" },
   { name: "Articles", type: "link" },
@@ -76,7 +77,7 @@ export const Header = () => {
   };
   const [profileDropDown, setProfileDropDown] = useState(false);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   return (
     <>
       <section className="header-section sticky top-0 left-0 right-0 z-50 bg-white">
@@ -116,7 +117,7 @@ export const Header = () => {
                       className=" flex gap-x-1 items-center px-4 py-2 btnSignin border-2 mt-5 lg:mt-0 border-blue-500  rounded-full"
                       onClick={() => setProfileDropDown(!profileDropDown)}
                     >
-                      <span>Profile</span>
+                      <span>Account</span>
                       <KeyboardArrowDownOutlined />
                     </button>
 
@@ -129,8 +130,9 @@ export const Header = () => {
                         <button
                           type="button"
                           className=" hover:bg-dark-hard  px-4 py-2  hover:text-white w-full"
+                          onClick={() => navigate("/profile")}
                         >
-                          Dashboard
+                          Profile
                         </button>
                         <button
                           onClick={() => logoutHandler()}
@@ -148,6 +150,7 @@ export const Header = () => {
               <button
                 className="btnSignin border-2 mt-5 lg:mt-0 border-blue-500 px-4 py-2  rounded-full"
                 type="submit"
+                onClick={() => navigate("/login")}
               >
                 Sign in
               </button>
