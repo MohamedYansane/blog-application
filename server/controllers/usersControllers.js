@@ -1,7 +1,6 @@
 import bcrypt from "bcrypt";
 import asyncHandler from "express-async-handler";
 import User from "../models/users";
-import jwt from "jsonwebtoken";
 import { uploadPicture } from "../middleware/uploadPictureMiddleware";
 import { fileRemove } from "../utils/fileRemove";
 
@@ -37,18 +36,6 @@ export const registerUser = asyncHandler(async (req, res) => {
   }
   const hashedPassword = await bcrypt.hash(password, 10);
   const _user = await User.create({ name, email, password: hashedPassword });
-  const accessToken = jwt.sign(
-    {
-      _id: _user._id,
-      avatar: _user.avatar,
-      name: _user.name,
-      email: _user.email,
-      password: _user.password,
-      verified: _user.verified,
-    },
-    process.env.ACCESS_TOKEN,
-    { expiresIn: "30d" }
-  );
 
   if (_user) {
     res.status(201).json({
@@ -77,29 +64,15 @@ export const loginUser = asyncHandler(async (req, res) => {
   const _user = await User.findOne({ email });
   if (!_user) throw new Error("Email not found");
   if (_user && (await bcrypt.compare(password, _user.password))) {
-    const acessToken = jwt.sign(
-      {
-        user: {
-          _id: _user._id,
-          avatar: _user.avatar,
-          name: _user.name,
-          email: _user.email,
-          admin: _user.admin,
-        },
-      },
-      process.env.ACCESS_TOKEN,
-      { expiresIn: "15m" }
-    );
-    /* res.status(201).json({
-            _id: _user._id,
-            avatar: _user.avatar,
-            name: _user.name,
-            email: _user.email,
-            password: _user.password,
-            verified: _user.verified,
-            token: accessToken
-        }); */
-    res.status(201).json(acessToken);
+    res.status(201).json({
+      _id: _user._id,
+      avatar: _user.avatar,
+      name: _user.name,
+      email: _user.email,
+      verified: _user.verified,
+      admin: _user.admin,
+      token: await _user.generateJwt(),
+    });
   } else {
     res.status(401);
     throw new Error("Email or password is incorrect");
@@ -113,7 +86,14 @@ export const userProfile = asyncHandler(async (req, res) => {
   // let _user = await User.findById(req.user._id).select("-password");
   let _user = await User.findById(req.user._id);
   if (_user) {
-    res.status(201).json(_user);
+    res.status(201).json({
+      _id: _user._id,
+      avatar: _user.avatar,
+      name: _user.name,
+      email: _user.email,
+      verified: _user.verified,
+      admin: _user.admin,
+    });
   } else {
     res.status(401);
     throw new Error("user not found user profile");

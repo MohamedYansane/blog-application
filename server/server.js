@@ -17,6 +17,7 @@ const port = process.env.PORT;
 
 // creating a middleware
 app.use(express.json());
+app.use(cors());
 /**starting point of our server connexion */
 /** create a package json file by typing npm init -y */
 /** 1- we gonna install body-parser it will enable us to send post request and
@@ -35,7 +36,7 @@ app.use(express.json());
 //configuring our body parse so that we can send requst
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors());
+
 app.use("/api/article", require("./routes/articleRoutes"));
 app.use("/api/user", require("./routes/userRoutes"));
 app.use("/api/users", usersRoutes);

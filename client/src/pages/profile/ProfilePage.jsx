@@ -6,17 +6,20 @@ import { useNavigate } from "react-router-dom";
 /* for form validation we've to install "npm install react-hook-form" */
 import { useForm } from "react-hook-form";
 //to fetch user data we have to import useQuery
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { userAction } from "../../store/reducers/userReducers";
-import { getUserProfile } from "../../services/index/users";
+import { getUserProfile, updateProfile } from "../../services/index/users";
 import { ProfilePicture } from "../../components/ProfilePicture";
+import toast from "react-hot-toast";
+// we 've to import toaster also in the app.js file
 export const ProfilePage = () => {
   //creating an instance of my useNavigate
   const navigate = useNavigate();
   const dispatch = useDispatch();
   //with our userState wwe wanna return a piece àf state
   const userState = useSelector((state) => state.user);
+  const queryClient = useQueryClient();
   //initialisation with useQuery
   const {
     data, //it equal to data:data
@@ -25,7 +28,9 @@ export const ProfilePage = () => {
   } = useQuery({
     // the first function we wanna run when this page load
     queryFn: () => {
-      return getUserProfile({ token: userState.userInfo });
+      // i had the problem of token before i resolve it inside the controllers
+      //so now i can return user.stateInfo.token
+      return getUserProfile({ token: userState.userInfo.token });
       //we've to return a function that return a props
     },
     //the query key is very important cause if we have the same keys
@@ -33,6 +38,40 @@ export const ProfilePage = () => {
     queryKey: ["profile"],
   });
   //console.log(`my token: ${userState.userInfo}`);
+
+  const { mutate, isLoading } = useMutation({
+    //mutationFn return a promise
+    mutationFn: ({ name, email, password }) => {
+      return updateProfile({
+        // i had the problem of token before i resolve it inside the controllers
+        //so now i can return user.stateInfo.token
+        token: userState.userInfo.token,
+        userData: { name, email, password },
+      });
+    },
+    //After getting the data from the backend
+    //the Onsuccess run automatically it has a callback we r passing the data
+    onSuccess: (data) => {
+      // console.log(data);
+      dispatch(userAction.setUserInfo(data));
+      //notice when we refresh our page our data in the
+      //store will disappear and we dont want that so we gonna
+      //store our data in localStorage
+      localStorage.setItem("account", JSON.stringify(data));
+      // i've to pull out then my data in my localstorage and store it to my redux store
+      //onece a data is updated we've to invalidate the query with key profile
+      //and refresh notice when we invalidate the query it refresh automatically
+      queryClient.invalidateQueries(["profile"]);
+
+      toast.success("Data is updated successfully");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+      console.log(error);
+      //to test it insinde our async function signup
+      //we tried to remove one required field and then try to register from the navigator
+    },
+  });
   useEffect(() => {
     if (!userState.userInfo) {
       navigate("/");
@@ -66,6 +105,10 @@ export const ProfilePage = () => {
   //console.log(`profile data ppage deug ${data}`);
   const submitHandler = (data) => {
     //console.log(data);
+    //pull out the data
+    const { name, email, password } = data;
+    //and then i call my mutate
+    mutate({ name, email, password });
   };
   return (
     <>
@@ -79,6 +122,7 @@ export const ProfilePage = () => {
            * error and we all know getting the data from the backend we r not sure
            * if it'll succeed without an error*/}
           <div className="shadow-[rgba(13,_38,_76,_0.19)_0px_9px_20px]  rounded-md px-2 py-3">
+            <p>{data?.name}</p>
             <ProfilePicture avatar={data?.avatar} className="" />
             <form onSubmit={handleSubmit(submitHandler)}>
               <div className=" md:grid md:grid-cols-2 lg:grid lg:grid-cols-2 px-4 md:px-0 lg:px-0">
@@ -145,24 +189,15 @@ export const ProfilePage = () => {
 
                   <div className="input-box flex flex-col items-center">
                     <span className="input-title text-md font-bold">
-                      Password
+                      New Password (optional)
                     </span>
                     <input
                       type="password"
-                      placeholder="Enter your password"
+                      placeholder="Enter a new password"
                       className={`border ${
                         errors.password ? "border-red-500" : "border-[#ccc]"
                       }`}
-                      {...register("password", {
-                        required: {
-                          value: true,
-                          message: "The password is required",
-                        },
-                        minLength: {
-                          value: 6,
-                          message: "The password must be at least 6 characters",
-                        },
-                      })}
+                      {...register("password")}
                       id="password"
                     />
                     {errors.password?.message && (
@@ -181,7 +216,7 @@ export const ProfilePage = () => {
                       className="disabled:opacity-70 disabled:cursor-not-allowed btn-save px-4 text-white py-2 rounded-md shadow-md"
                       disabled={!isValid || profileIsLoading}
                     >
-                      Register
+                      Update
                     </button>
                   </div>
                 </div>
