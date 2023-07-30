@@ -4,14 +4,21 @@ import "./header.scss";
 import { Menu, Close, KeyboardArrowDownOutlined } from "@mui/icons-material";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../store/actions/user";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const navInfo = [
-  { name: "Home", type: "link" },
-  { name: "Articles", type: "link" },
-  { name: "Pages", type: "dropdown", items: ["About us", "Contact us"] },
-  { name: "Pricing", type: "link" },
-  { name: "Faq", type: "link" },
+  { name: "Home", type: "link", href: "/" },
+  { name: "Articles", type: "link", href: "/articles" },
+  {
+    name: "Pages",
+    type: "dropdown",
+    items: [
+      { title: "About us", href: "/about" },
+      { title: "Contact us", href: "/contact" },
+    ],
+  },
+  { name: "Pricing", type: "link", href: "/pricing" },
+  { name: "Faq", type: "link", href: "/faq" },
 ];
 const NavItem = ({ item }) => {
   // i dont want a drop down for mobile
@@ -24,12 +31,12 @@ const NavItem = ({ item }) => {
     <li className="nav-item relative group " key={item.name}>
       {item.type === "link" ? (
         <>
-          <a href="" className="px-4 py-2">
+          <Link to={item.href} className="px-4 py-2">
             {item.name}
             <span className="text-blue-500 absolute transition-all duration-500 group-hover:font-bold right-0 top-0  group-hover:right-[90%] opacity-0 group-hover:opacity-100">
               /
             </span>
-          </a>
+          </Link>
         </>
       ) : (
         <div className=" ">
@@ -52,9 +59,9 @@ const NavItem = ({ item }) => {
                   className="px-4 py-2 hover:bg-dark-hard  hover:text-white "
                   key={index}
                 >
-                  <a href="/" className="">
-                    {page}
-                  </a>
+                  <Link to={page.href} className="">
+                    {page.title}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -82,9 +89,9 @@ export const Header = () => {
     <>
       <section className="header-section sticky top-0 left-0 right-0 z-50 bg-white">
         <header className="py-4 mx-auto container ">
-          <div className="logo w-16">
+          <Link to="/" className="logo w-16">
             <img src={logo} alt="ehya" className="w-16" />
-          </div>
+          </Link>
           <div className="lg:hidden z-50">
             {navIsVisible ? (
               <Close
