@@ -71,3 +71,25 @@ export const updateProfile = async ({ token, userData }) => {
     throw new Error(error.message);
   }
 };
+export const updateProfilePicture = async ({ token, formData }) => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    //it a get request we don't need to pass any data
+    const { data } = await axios.put(
+      "/api/users/updateProfilePicture",
+      formData,
+      config
+    );
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error(error.message);
+  }
+};

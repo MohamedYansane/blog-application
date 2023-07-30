@@ -39,7 +39,7 @@ export const ProfilePage = () => {
   });
   //console.log(`my token: ${userState.userInfo}`);
 
-  const { mutate, isLoading } = useMutation({
+  const { mutate, isLoading: updateProfileIsLoading } = useMutation({
     //mutationFn return a promise
     mutationFn: ({ name, email, password }) => {
       return updateProfile({
@@ -122,7 +122,6 @@ export const ProfilePage = () => {
            * error and we all know getting the data from the backend we r not sure
            * if it'll succeed without an error*/}
           <div className="shadow-[rgba(13,_38,_76,_0.19)_0px_9px_20px]  rounded-md px-2 py-3">
-            <p>{data?.name}</p>
             <ProfilePicture avatar={data?.avatar} className="" />
             <form onSubmit={handleSubmit(submitHandler)}>
               <div className=" md:grid md:grid-cols-2 lg:grid lg:grid-cols-2 px-4 md:px-0 lg:px-0">
@@ -214,7 +213,9 @@ export const ProfilePage = () => {
                     <button
                       type="submit"
                       className="disabled:opacity-70 disabled:cursor-not-allowed btn-save px-4 text-white py-2 rounded-md shadow-md"
-                      disabled={!isValid || profileIsLoading}
+                      disabled={
+                        !isValid || profileIsLoading || updateProfileIsLoading
+                      }
                     >
                       Update
                     </button>

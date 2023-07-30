@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { errorHandler, invalidApiPathHandler } from "./middleware/errorHandler";
 import bdConnection from "./config/dbConnection";
 import cors from "cors";
+import path from "path";
 import bodyParser from "body-parser";
 // importation of routes
 import usersRoutes from "./routes/usersRoutes";
@@ -36,7 +37,9 @@ app.use(cors());
 //configuring our body parse so that we can send requst
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-
+//static assets to allow backend to reach our image folder
+// for browser __dirname__ is an environment variable that give us the absolute path
+app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 app.use("/api/article", require("./routes/articleRoutes"));
 app.use("/api/user", require("./routes/userRoutes"));
 app.use("/api/users", usersRoutes);
