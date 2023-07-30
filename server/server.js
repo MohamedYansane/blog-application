@@ -5,7 +5,7 @@ import { errorHandler, invalidApiPathHandler } from "./middleware/errorHandler";
 import bdConnection from "./config/dbConnection";
 import cors from "cors";
 import path from "path";
-import bodyParser from "body-parser";
+
 // importation of routes
 import usersRoutes from "./routes/usersRoutes";
 dotenv.config();
@@ -35,8 +35,8 @@ app.use(cors());
  * before usin import express we've to add type:module in our package.json file
  * otherwose we gonna use const express = require('express') we don't want that*/
 //configuring our body parse so that we can send requst
-app.use(bodyParser.json({ limit: "30mb", extended: true }));
-app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
+/*app.use(bodyParser.json({ limit: "30mb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));*/
 //static assets to allow backend to reach our image folder
 // for browser __dirname__ is an environment variable that give us the absolute path
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
