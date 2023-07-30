@@ -25,11 +25,11 @@ const storage = multer.diskStorage({
 export const uploadPicture = multer({
   storage: storage,
   limits: {
-    fileSize: 1 * 1000000, // 1MB
+    fileSize: 3 * 1000000, // 1MB
   },
   fileFilter: (req, file, cb) => {
     let ext = path.extname(file.originalname);
-    if (ext !== ".png" && ext && ".jpg" && ext !== ".jpeg") {
+    if (ext !== ".png" && ext !== ".jpg" && ext !== ".jpeg") {
       return cb(new Error("Only images are allowed"));
     }
     // if everything is ok  error null and ext true
