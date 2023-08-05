@@ -23,7 +23,7 @@ const postSchema = mongoose.Schema(
     },
     photo: {
       type: String,
-      required: true,
+      required: false,
     },
     // cause we wanna know which user added the post
     //with the ref we can now populate our data

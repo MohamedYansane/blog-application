@@ -8,6 +8,7 @@ import path from "path";
 
 // importation of routes
 import usersRoutes from "./routes/usersRoutes";
+import postRoutes from "./routes/postRoutes";
 dotenv.config();
 // calling my db connexion
 bdConnection();
@@ -43,6 +44,7 @@ app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 app.use("/api/article", require("./routes/articleRoutes"));
 app.use("/api/user", require("./routes/userRoutes"));
 app.use("/api/users", usersRoutes);
+app.use("/api/posts", postRoutes);
 // error handler api
 app.use(invalidApiPathHandler);
 app.use(errorHandler);

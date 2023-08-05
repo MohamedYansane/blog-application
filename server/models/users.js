@@ -40,7 +40,6 @@ User.methods.generateJwt = function () {
   return jwt.sign(
     {
       _id: this._id,
-      name: this.name,
     },
     process.env.ACCESS_TOKEN,
     { expiresIn: "30d" }
