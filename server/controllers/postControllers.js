@@ -4,6 +4,7 @@ import { uploadPicture } from "../middleware/uploadPictureMiddleware";
 import { fileRemove } from "../utils/fileRemove";
 import Post from "../models/Post";
 import { v4 as uuidv4 } from "uuid";
+import Comment from "../models/Comments";
 // if i didn't use asyncHandler in the catch block
 // i must add next as an argument and in the catch
 // call him by passing the error next(error);
@@ -22,7 +23,7 @@ export const getPosts = asyncHandler(async (req, res) => {
 export const createPost = asyncHandler(async (req, res) => {
   const post = new Post({
     title: "Sample Tiltle",
-    caption: "sample caption",
+    caption: req.body.caption || "",
     slug: uuidv4(),
     body: {
       type: "doc",
@@ -96,5 +97,15 @@ export const updatePost = asyncHandler(async (req, res) => {
     }
   });
 });
-export const deletePost = asyncHandler(async () => {});
+export const deletePost = asyncHandler(async (req, res) => {
+  const post = await Post.findOneAndDelete({ slug: req.params.slug });
+  if (!post) {
+    res.status(401);
+    throw new Error("Post was not found");
+  }
+  //then after deleting the post i want to delete also the
+  //comments related to that post
+  await Comment.deleteMany({ post: post._id });
+  return res.json({ message: "Post deleted successfully" });
+});
 export const getPost = asyncHandler(async () => {});
