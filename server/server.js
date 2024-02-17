@@ -9,6 +9,7 @@ import path from "path";
 // importation of routes
 import usersRoutes from "./routes/usersRoutes";
 import postRoutes from "./routes/postRoutes";
+import commentRoutes from "./routes/commentRoutes";
 dotenv.config();
 // calling my db connexion
 bdConnection();
@@ -45,6 +46,7 @@ app.use("/api/article", require("./routes/articleRoutes"));
 app.use("/api/user", require("./routes/userRoutes"));
 app.use("/api/users", usersRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api/comments", commentRoutes);
 // error handler api
 app.use(invalidApiPathHandler);
 app.use(errorHandler);

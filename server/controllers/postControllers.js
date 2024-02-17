@@ -5,6 +5,7 @@ import { fileRemove } from "../utils/fileRemove";
 import Post from "../models/Post";
 import { v4 as uuidv4 } from "uuid";
 import Comment from "../models/Comments";
+
 // if i didn't use asyncHandler in the catch block
 // i must add next as an argument and in the catch
 // call him by passing the error next(error);
@@ -108,4 +109,37 @@ export const deletePost = asyncHandler(async (req, res) => {
   await Comment.deleteMany({ post: post._id });
   return res.json({ message: "Post deleted successfully" });
 });
-export const getPost = asyncHandler(async () => {});
+export const getPost = asyncHandler(async (req, res) => {
+  // after finding a post i want to populate the user info inside the post data
+  const post = await Post.findOne({ slug: req.params.slug }).populate([
+    // we're telling here if the field = "user" we want to select some data
+    // of our user like avatar and name
+    { path: "user", select: ["avatar", "name"] },
+    //we've to retrieve the comments related to the post also
+    // here we used comments cause in our virtual in Post models
+    //we created a virtuals comments
+    //the parents must be null means it must be the main comment
+    {
+      path: "comments",
+      match: { check: true, parent: null }, //for replies
+      // we can get a user data by adding a nested populate. In
+      //my comments array i got a user data its related to our comments
+      //in path it's for him
+      populate: [
+        {
+          // the users now is for the comments not the post
+          path: "user",
+          select: ["avatar", "name"],
+        },
+        // in our commentSchema we created a virtual comments
+        //called replies
+        { path: "replies", match: { check: true } },
+      ],
+    },
+  ]);
+  if (!post) {
+    res.status(401);
+    throw new Error("Post was not found");
+  }
+  return res.json(post);
+});

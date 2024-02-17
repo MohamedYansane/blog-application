@@ -15,21 +15,22 @@ const commentSchema = mongoose.Schema(
     //is considered as a main comment
     parent: {
       type: Schema.Types.ObjectId,
-      default: null,
+
       ref: "Comments",
+      default: null,
     },
     //with this attribute we  can fetch the user data who replied to this comment
-    replyOnUser: { type: Schema.Types.ObjectId, default: null, ref: "Users" },
+    replyOnUser: { type: Schema.Types.ObjectId, ref: "Users", default: null },
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true } }
 );
 // so now we gonna create a relation for a comment itself
 // wer  creating a virtual relation
 //for more details see: https://mongoosejs.com/docs/tutorials/virtuals.html in Populate part
 //so here i wanna get replies comment for the main comment
 commentSchema.virtual("replies", {
+  ref: "Comments",
   localField: "_id",
-
   foreignField: "parent",
 });
 const Comment = mongoose.model("Comments", commentSchema);

@@ -37,12 +37,16 @@ const postSchema = mongoose.Schema(
     },
     categories: [{ type: Schema.Types.ObjectId, ref: "PostCategories" }],
   },
-  { timestamps: true }
+  //when we send a get request we didnt receive
+  //our comments related to our posts to see comments
+  // we've to set virtuals to true
+  { timestamps: true, toJSON: { virtuals: true } }
 );
 // so now we gonna create a relation between our post and comment
 //here we've no reference to the comment schema that's why we creating the virtual relation
 //for more details see: https://mongoosejs.com/docs/tutorials/virtuals.html in Populate part
 postSchema.virtual("comments", {
+  ref: "Comments",
   //mongoDb generate _id for each schema by default the localField here
   // correspond to our PostSchema id
   localField: "_id",

@@ -17,6 +17,8 @@ router
   .route("/:slug")
   .put(validateToken, adminGuard, updatePost)
   .delete(validateToken, adminGuard, deletePost)
-  .get(validateToken, adminGuard, getPost);
-
+  .get(getPost);
+//for the getPost its like get articles
+// we don't need user to be authentified
+//to see posts
 export default router;
