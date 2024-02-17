@@ -49,7 +49,11 @@ export const Hero = () => {
         </div>
       </div>
       <div className="hero-image hidden lg:block">
-        <img src={images.heroImg} alt="users are reading articles" />
+        <img
+          className="h-img w-[570px] h-[500px]"
+          src={images.presentation}
+          alt="users are reading articles"
+        />
       </div>
     </section>
   );
