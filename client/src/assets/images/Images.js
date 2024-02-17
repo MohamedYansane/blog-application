@@ -7,6 +7,8 @@ import profil_pic from "./profile-pic.png";
 import replyWhite from "./replypic.jpg";
 import replybg from "./reply.png";
 import heroImg from "./hero_img.png";
+import blog from "./blog.png";
+import presentation from "./presentation.png";
 const images = {
   griffing,
   computer,
@@ -17,5 +19,7 @@ const images = {
   replybg,
   commentpic,
   heroImg,
+  blog,
+  presentation,
 };
 export default images;
